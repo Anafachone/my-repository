@@ -50,7 +50,7 @@ const SECTIONS: Section[] = [
     id: 's3',
     tab: '03 · Público',
     questions: [
-      { key: 'cliente_ideal', label: 'Descreva seu cliente ideal como uma pessoa real', type: 'textarea' },
+      { key: 'cliente_ideal', label: 'Descreva seu cliente ideal como uma pessoa real', type: 'textarea', placeholder: 'Nome fictício, idade, rotina, fim de semana.' },
       { key: 'gatilho', label: 'O que leva alguém a buscar seu produto/serviço?', type: 'textarea' },
       { key: 'avalia', label: 'O que avalia antes de comprar de você?', type: 'textarea' },
       { key: 'objecoes', label: 'Frases que usam para justificar o NÃO', type: 'textarea' },
@@ -101,11 +101,47 @@ function openPdf(answers: Record<string, string>) {
     body += `<div class="section-block"><div class="section-title">${section.tab}</div>`
     section.questions.forEach(q => {
       const val = answers[q.key] || ''
-      body += `<div class="q-wrap"><div class="q-label">${q.label}</div><div class="q-answer">${val || '—'}</div></div>`
+      body += `<div class="q-wrap">
+        <div class="q-label">${q.label}</div>
+        <div class="q-answer">${val || '—'}</div>
+      </div>`
     })
     body += '</div>'
   })
-  win.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Briefing — ${name}</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',sans-serif;background:#F6F1EC;color:#1D1D1B}.page{max-width:780px;margin:0 auto;padding:48px}.header{background:#253142;border-radius:12px;padding:28px 32px;margin-bottom:36px;display:flex;align-items:center;gap:20px}.header h1{font-size:22px;color:#B89B5E;letter-spacing:3px;text-transform:uppercase}.header p{font-size:10px;letter-spacing:4px;color:#B89B5E88;text-transform:uppercase;margin-top:4px}.header-badge{margin-left:auto;background:#B89B5E22;border:1px solid #B89B5E44;border-radius:20px;padding:6px 16px;color:#B89B5E;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}.meta{display:flex;justify-content:space-between;font-size:11px;color:#A5948A;margin-bottom:32px;letter-spacing:1px}.section-block{margin-bottom:36px;break-inside:avoid}.section-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#B89B5E;border-bottom:1px solid #B89B5E44;padding-bottom:8px;margin-bottom:20px}.q-wrap{margin-bottom:18px}.q-label{font-size:10px;color:#B89B5E;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}.q-answer{font-size:12px;color:#253142;background:#fff;border-left:3px solid #B89B5E;padding:10px 14px;border-radius:0 6px 6px 0;line-height:1.7;min-height:36px}.footer{border-top:1px solid #B89B5E44;padding-top:16px;text-align:center;font-size:10px;color:#A5948A;letter-spacing:2px;text-transform:uppercase;margin-top:48px}@media print{body{background:white}.page{padding:24px}}</style></head><body><div class="page"><div class="header"><div><h1>Ana Fachone</h1><p>Marketing Digital</p></div><div class="header-badge">Briefing de Cliente</div></div><div class="meta"><span>Cliente: <strong style="color:#253142">${name}</strong></span><span>Data: ${date}</span></div>${body}<div class="footer">Ana Fachone Marketing Digital</div></div><script>window.onload=function(){window.print()}</script></body></html>`)
+  win.document.write(`<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<title>Briefing — ${name}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#F6F1EC;color:#1D1D1B}
+.page{max-width:780px;margin:0 auto;padding:48px}
+.header{background:#253142;border-radius:12px;padding:28px 32px;margin-bottom:36px;display:flex;align-items:center;gap:20px}
+.header h1{font-size:22px;color:#B89B5E;letter-spacing:3px;text-transform:uppercase}
+.header p{font-size:10px;letter-spacing:4px;color:#B89B5E88;text-transform:uppercase;margin-top:4px}
+.header-badge{margin-left:auto;background:#B89B5E22;border:1px solid #B89B5E44;border-radius:20px;padding:6px 16px;color:#B89B5E;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+.meta{display:flex;justify-content:space-between;font-size:11px;color:#A5948A;margin-bottom:32px;letter-spacing:1px}
+.section-block{margin-bottom:36px;break-inside:avoid}
+.section-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#B89B5E;border-bottom:1px solid #B89B5E44;padding-bottom:8px;margin-bottom:20px}
+.q-wrap{margin-bottom:18px}
+.q-label{font-size:10px;color:#B89B5E;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.q-answer{font-size:12px;color:#253142;background:#fff;border-left:3px solid #B89B5E;padding:10px 14px;border-radius:0 6px 6px 0;line-height:1.7;min-height:36px}
+.footer{border-top:1px solid #B89B5E44;padding-top:16px;text-align:center;font-size:10px;color:#A5948A;letter-spacing:2px;text-transform:uppercase;margin-top:48px}
+@media print{body{background:white}.page{padding:24px}}
+</style></head><body>
+<div class="page">
+  <div class="header">
+    <div><h1>Ana Fachone</h1><p>Marketing Digital</p></div>
+    <div class="header-badge">Briefing de Cliente</div>
+  </div>
+  <div class="meta">
+    <span>Cliente: <strong style="color:#253142">${name}</strong></span>
+    <span>Data: ${date}</span>
+  </div>
+  ${body}
+  <div class="footer">Ana Fachone Marketing Digital</div>
+</div>
+<script>window.onload=function(){window.print()}</script>
+</body></html>`)
   win.document.close()
 }
 
@@ -124,7 +160,9 @@ export default function Page() {
   function toggleChip(key: string, option: string) {
     setChips(prev => {
       const current = prev[key] || []
-      const next = current.includes(option) ? current.filter(o => o !== option) : [...current, option]
+      const next = current.includes(option)
+        ? current.filter(o => o !== option)
+        : [...current, option]
       setAnswer(key, next.join(', '))
       return { ...prev, [key]: next }
     })
@@ -134,14 +172,32 @@ export default function Page() {
   const filledCount = Object.values(answers).filter(v => v && v.trim()).length
 
   async function submit() {
-    if (!answers.nome) { setMessage('Preencha ao menos o nome do cliente antes de enviar.'); setStatus('error'); return }
-    setStatus('loading'); setMessage('Salvando…')
+    if (!answers.nome) {
+      setMessage('Preencha ao menos o nome do cliente antes de enviar.')
+      setStatus('error')
+      return
+    }
+    setStatus('loading')
+    setMessage('Salvando…')
     try {
-      const res = await fetch('/api/responses', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(answers) })
+      const res = await fetch('/api/responses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(answers),
+      })
       const json = await res.json()
-      if (json.success) { setStatus('success'); setMessage('Briefing salvo com sucesso!'); setSubmitted(true) }
-      else { setStatus('error'); setMessage('Erro ao salvar. Tente novamente.') }
-    } catch { setStatus('error'); setMessage('Erro de conexão. Tente novamente.') }
+      if (json.success) {
+        setStatus('success')
+        setMessage('Briefing salvo com sucesso!')
+        setSubmitted(true)
+      } else {
+        setStatus('error')
+        setMessage('Erro ao salvar. Tente novamente.')
+      }
+    } catch {
+      setStatus('error')
+      setMessage('Erro de conexão. Tente novamente.')
+    }
   }
 
   const section = SECTIONS[currentIdx]
@@ -152,8 +208,15 @@ export default function Page() {
         <div style={{ maxWidth: 480, width: '100%', background: DARK, borderRadius: 16, padding: '40px 32px', textAlign: 'center', border: `1px solid ${GOLD}44` }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
           <div style={{ fontFamily: 'Georgia,serif', fontSize: 18, color: GOLD, letterSpacing: 2, textTransform: 'uppercase', marginBottom: 12 }}>Briefing Enviado!</div>
-          <p style={{ color: `${GOLD}99`, fontSize: 13, lineHeight: 1.7, marginBottom: 28 }}>Obrigado por preencher o briefing. As informações foram salvas e Ana Fachone entrará em contato em breve.</p>
-          <button onClick={() => openPdf(answers)} style={{ background: `${GOLD}22`, border: `1px solid ${GOLD}`, color: GOLD, padding: '10px 20px', borderRadius: 6, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', cursor: 'pointer', fontFamily: 'sans-serif' }}>Baixar PDF ↓</button>
+          <p style={{ color: `${GOLD}99`, fontSize: 13, lineHeight: 1.7, marginBottom: 28 }}>
+            Obrigado por preencher o briefing. As informações foram salvas e Ana Fachone entrará em contato em breve.
+          </p>
+          <button
+            onClick={() => openPdf(answers)}
+            style={{ background: `${GOLD}22`, border: `1px solid ${GOLD}`, color: GOLD, padding: '10px 20px', borderRadius: 6, fontSize: 11, letterSpacing: 2, textTransform: 'uppercase', cursor: 'pointer', fontFamily: 'sans-serif' }}
+          >
+            Baixar PDF ↓
+          </button>
         </div>
       </div>
     )
@@ -162,12 +225,14 @@ export default function Page() {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', background: CREAM, padding: '24px 16px' }}>
       <div style={{ width: '100%', maxWidth: 680, background: '#fff', borderRadius: 16, overflow: 'hidden', border: `1px solid ${GOLD}44`, boxShadow: '0 4px 32px rgba(37,49,66,0.08)' }}>
+
+        {/* Header */}
         <div style={{ background: DARK, padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
           <svg width="44" height="44" viewBox="0 0 100 100" fill="none">
-            <path d="M74 18 A34 34 0 1 0 88 64" stroke="#B89B5E" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-            <text x="10" y="76" fontFamily="Georgia,serif" fontSize="62" fill="#B89B5E">A</text>
-            <text x="46" y="71" fontFamily="Georgia,serif" fontSize="48" fill="#B89B5E">F</text>
-            <circle cx="38" cy="75" r="3.5" fill="#B89B5E" />
+            <path d="M74 18 A34 34 0 1 0 88 64" stroke={GOLD} strokeWidth="1.6" fill="none" strokeLinecap="round" />
+            <text x="10" y="76" fontFamily="Georgia,serif" fontSize="62" fill={GOLD}>A</text>
+            <text x="46" y="71" fontFamily="Georgia,serif" fontSize="48" fill={GOLD}>F</text>
+            <circle cx="38" cy="75" r="3.5" fill={GOLD} />
           </svg>
           <div style={{ width: 1, height: 28, background: GOLD, opacity: 0.4 }} />
           <div>
@@ -175,36 +240,154 @@ export default function Page() {
             <div style={{ fontSize: 8, letterSpacing: 3, color: `${GOLD}77`, textTransform: 'uppercase', marginTop: 1 }}>Marketing Digital</div>
           </div>
           <div style={{ marginLeft: 'auto' }}>
-            <div style={{ background: `${GOLD}22`, border: `1px solid ${GOLD}44`, borderRadius: 20, padding: '3px 10px', color: GOLD, fontSize: 9, letterSpacing: 1 }}>{filledCount}/{totalFields} campos</div>
+            <div style={{ background: `${GOLD}22`, border: `1px solid ${GOLD}44`, borderRadius: 20, padding: '3px 10px', color: GOLD, fontSize: 9, letterSpacing: 1 }}>
+              {filledCount}/{totalFields} campos
+            </div>
           </div>
         </div>
+
+        {/* Progress bar */}
         <div style={{ background: DARK, padding: '0 20px 12px', display: 'flex', gap: 3 }}>
-          {SECTIONS.map((_, i) => (<div key={i} onClick={() => setCurrentIdx(i)} style={{ flex: 1, height: 3, borderRadius: 2, cursor: 'pointer', background: i < currentIdx ? GOLD : i === currentIdx ? `${GOLD}88` : `${GOLD}22`, transition: 'background .3s' }} />))}
+          {SECTIONS.map((_, i) => (
+            <div
+              key={i}
+              onClick={() => setCurrentIdx(i)}
+              style={{
+                flex: 1, height: 3, borderRadius: 2, cursor: 'pointer',
+                background: i < currentIdx ? GOLD : i === currentIdx ? `${GOLD}88` : `${GOLD}22`,
+                transition: 'background .3s',
+              }}
+            />
+          ))}
         </div>
+
+        {/* Tab navigation */}
         <div style={{ display: 'flex', background: '#EDE8E0', borderBottom: `1px solid ${GOLD}33`, overflowX: 'auto' }}>
-          {SECTIONS.map((s, i) => (<button key={i} onClick={() => setCurrentIdx(i)} style={{ padding: '9px 11px', fontSize: 8, letterSpacing: 1.5, textTransform: 'uppercase', color: currentIdx === i ? DARK : GRAY, cursor: 'pointer', background: 'none', border: 'none', borderBottom: currentIdx === i ? `2px solid ${GOLD}` : '2px solid transparent', fontWeight: currentIdx === i ? 700 : 400, whiteSpace: 'nowrap', fontFamily: 'sans-serif' }}>{s.tab}</button>))}
+          {SECTIONS.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIdx(i)}
+              style={{
+                padding: '9px 11px', fontSize: 8, letterSpacing: 1.5, textTransform: 'uppercase',
+                color: currentIdx === i ? DARK : GRAY, cursor: 'pointer', background: 'none', border: 'none',
+                borderBottom: currentIdx === i ? `2px solid ${GOLD}` : '2px solid transparent',
+                fontWeight: currentIdx === i ? 700 : 400, whiteSpace: 'nowrap', fontFamily: 'sans-serif',
+              }}
+            >
+              {s.tab}
+            </button>
+          ))}
         </div>
+
+        {/* Questions */}
         <div style={{ padding: '18px 20px 20px' }}>
           {section.questions.map((q, i) => (
             <div key={i}>
               <div style={{ marginBottom: 14 }}>
                 <div style={{ fontSize: 9, letterSpacing: 2, textTransform: 'uppercase', color: GOLD, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ background: DARK, color: GOLD, width: 15, height: 15, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, flexShrink: 0 }}>{i + 1}</span>
+                  <span style={{ background: DARK, color: GOLD, width: 15, height: 15, borderRadius: '50%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 8, flexShrink: 0 }}>
+                    {i + 1}
+                  </span>
                   {q.label}
                 </div>
-                {q.type === 'input' && (<input value={answers[q.key] || ''} onChange={e => setAnswer(q.key, e.target.value)} placeholder={q.placeholder || ''} style={{ width: '100%', background: '#fff', border: `1px solid ${GOLD}44`, borderRadius: 6, padding: '7px 10px', fontSize: 12, color: DARK, fontFamily: 'sans-serif', outline: 'none', boxSizing: 'border-box' }} />)}
-                {q.type === 'textarea' && (<textarea value={answers[q.key] || ''} onChange={e => setAnswer(q.key, e.target.value)} placeholder={q.placeholder || ''} rows={3} style={{ width: '100%', background: '#fff', border: `1px solid ${GOLD}44`, borderRadius: 6, padding: '7px 10px', fontSize: 12, color: DARK, fontFamily: 'sans-serif', outline: 'none', resize: 'vertical', boxSizing: 'border-box' }} />)}
-                {q.type === 'chips' && (<div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>{(q.options || []).map(option => { const active = (chips[q.key] || []).includes(option); return (<button key={option} onClick={() => toggleChip(q.key, option)} style={{ padding: '5px 11px', border: `1px solid ${active ? DARK : GOLD}44`, borderRadius: 20, fontSize: 10, color: active ? GOLD : GRAY, background: active ? DARK : '#fff', cursor: 'pointer', fontFamily: 'sans-serif' }}>{option}</button>) })}</div>)}
+
+                {q.type === 'input' && (
+                  <input
+                    value={answers[q.key] || ''}
+                    onChange={e => setAnswer(q.key, e.target.value)}
+                    placeholder={q.placeholder || ''}
+                    style={{ width: '100%', background: '#fff', border: `1px solid ${GOLD}44`, borderRadius: 6, padding: '7px 10px', fontSize: 12, color: DARK, fontFamily: 'sans-serif', outline: 'none', boxSizing: 'border-box' }}
+                  />
+                )}
+
+                {q.type === 'textarea' && (
+                  <textarea
+                    value={answers[q.key] || ''}
+                    onChange={e => setAnswer(q.key, e.target.value)}
+                    placeholder={q.placeholder || ''}
+                    rows={3}
+                    style={{ width: '100%', background: '#fff', border: `1px solid ${GOLD}44`, borderRadius: 6, padding: '7px 10px', fontSize: 12, color: DARK, fontFamily: 'sans-serif', outline: 'none', resize: 'vertical', boxSizing: 'border-box' }}
+                  />
+                )}
+
+                {q.type === 'chips' && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>
+                    {(q.options || []).map(option => {
+                      const active = (chips[q.key] || []).includes(option)
+                      return (
+                        <button
+                          key={option}
+                          onClick={() => toggleChip(q.key, option)}
+                          style={{
+                            padding: '5px 11px', border: `1px solid ${active ? DARK : GOLD}44`,
+                            borderRadius: 20, fontSize: 10, color: active ? GOLD : GRAY,
+                            background: active ? DARK : '#fff', cursor: 'pointer', fontFamily: 'sans-serif',
+                          }}
+                        >
+                          {option}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
-              {i < section.questions.length - 1 && (<div style={{ borderTop: `1px solid ${GOLD}22`, marginBottom: 14 }} />)}
+              {i < section.questions.length - 1 && (
+                <div style={{ borderTop: `1px solid ${GOLD}22`, marginBottom: 14 }} />
+              )}
             </div>
           ))}
         </div>
-        {status && (<div style={{ margin: '0 20px 12px', padding: '10px 14px', borderRadius: 8, background: status === 'success' ? '#1a3a2a' : status === 'error' ? '#3a1a1a' : '#1C2738', border: `1px solid ${status === 'success' ? '#4CAF50' : status === 'error' ? '#e57373' : GOLD}44`, display: 'flex', alignItems: 'center', gap: 10 }}>{status === 'loading' && (<div style={{ width: 14, height: 14, border: `2px solid ${GOLD}44`, borderTop: `2px solid ${GOLD}`, borderRadius: '50%', animation: 'spin 1s linear infinite', flexShrink: 0 }} />)}{status === 'success' && <span style={{ color: '#4CAF50', fontSize: 14 }}>✓</span>}{status === 'error' && <span style={{ color: '#e57373', fontSize: 14 }}>✕</span>}<div style={{ fontSize: 11, color: status === 'success' ? '#4CAF50' : status === 'error' ? '#e57373' : GOLD }}>{message}</div></div>)}
+
+        {/* Status message */}
+        {status && (
+          <div style={{
+            margin: '0 20px 12px', padding: '10px 14px', borderRadius: 8,
+            background: status === 'success' ? '#1a3a2a' : status === 'error' ? '#3a1a1a' : '#1C2738',
+            border: `1px solid ${status === 'success' ? '#4CAF50' : status === 'error' ? '#e57373' : GOLD}44`,
+            display: 'flex', alignItems: 'center', gap: 10,
+          }}>
+            {status === 'loading' && (
+              <div style={{ width: 14, height: 14, border: `2px solid ${GOLD}44`, borderTop: `2px solid ${GOLD}`, borderRadius: '50%', animation: 'spin 1s linear infinite', flexShrink: 0 }} />
+            )}
+            {status === 'success' && <span style={{ color: '#4CAF50', fontSize: 14 }}>✓</span>}
+            {status === 'error' && <span style={{ color: '#e57373', fontSize: 14 }}>✕</span>}
+            <div style={{ fontSize: 11, color: status === 'success' ? '#4CAF50' : status === 'error' ? '#e57373' : GOLD }}>
+              {message}
+            </div>
+          </div>
+        )}
+
+        {/* Footer navigation */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 20px', borderTop: `1px solid ${GOLD}22`, background: '#EDE8E0', gap: 6, flexWrap: 'wrap' }}>
-          <button onClick={() => setCurrentIdx(i => Math.max(0, i - 1))} disabled={currentIdx === 0} style={{ background: 'none', border: `1px solid ${GOLD}`, color: DARK, padding: '7px 12px', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', cursor: currentIdx === 0 ? 'default' : 'pointer', borderRadius: 4, opacity: currentIdx === 0 ? 0.3 : 1, fontFamily: 'sans-serif' }}>← Anterior</button>
-          <button onClick={() => openPdf(answers)} style={{ background: `${GOLD}22`, border: `1px solid ${GOLD}`, color: DARK, padding: '7px 12px', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', cursor: 'pointer', borderRadius: 4, fontFamily: 'sans-serif' }}>PDF ↓</button>
-          {currentIdx < SECTIONS.length - 1 ? (<button onClick={() => setCurrentIdx(i => i + 1)} style={{ background: DARK, border: `1px solid ${GOLD}44`, color: GOLD, padding: '7px 12px', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', cursor: 'pointer', borderRadius: 4, fontFamily: 'sans-serif' }}>Próxima →</button>) : (<button onClick={submit} disabled={status === 'loading'} style={{ background: GOLD, border: 'none', color: DARK, padding: '8px 18px', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', cursor: status === 'loading' ? 'wait' : 'pointer', borderRadius: 4, fontFamily: 'sans-serif', fontWeight: 700 }}>{status === 'loading' ? 'Salvando…' : 'Finalizar ✓'}</button>)}
+          <button
+            onClick={() => setCurrentIdx(i => Math.max(0, i - 1))}
+            disabled={currentIdx === 0}
+            style={{ background: 'none', border: `1px solid ${GOLD}`, color: DARK, padding: '7px 12px', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', cursor: currentIdx === 0 ? 'default' : 'pointer', borderRadius: 4, opacity: currentIdx === 0 ? 0.3 : 1, fontFamily: 'sans-serif' }}
+          >
+            ← Anterior
+          </button>
+          <button
+            onClick={() => openPdf(answers)}
+            style={{ background: `${GOLD}22`, border: `1px solid ${GOLD}`, color: DARK, padding: '7px 12px', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', cursor: 'pointer', borderRadius: 4, fontFamily: 'sans-serif' }}
+          >
+            PDF ↓
+          </button>
+          {currentIdx < SECTIONS.length - 1 ? (
+            <button
+              onClick={() => setCurrentIdx(i => i + 1)}
+              style={{ background: DARK, border: `1px solid ${GOLD}44`, color: GOLD, padding: '7px 12px', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', cursor: 'pointer', borderRadius: 4, fontFamily: 'sans-serif' }}
+            >
+              Próxima →
+            </button>
+          ) : (
+            <button
+              onClick={submit}
+              disabled={status === 'loading'}
+              style={{ background: GOLD, border: 'none', color: DARK, padding: '8px 18px', fontSize: 8, letterSpacing: 2, textTransform: 'uppercase', cursor: status === 'loading' ? 'wait' : 'pointer', borderRadius: 4, fontFamily: 'sans-serif', fontWeight: 700 }}
+            >
+              {status === 'loading' ? 'Salvando…' : 'Finalizar ✓'}
+            </button>
+          )}
         </div>
       </div>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
