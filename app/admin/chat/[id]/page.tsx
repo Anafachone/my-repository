@@ -1,64 +1,71 @@
-import "server-only";
-import { connection } from "next/server";
-import { cookies } from "next/headers";
-import { redirect, notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState, use } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { verifyAdminToken } from "@/lib/admin-auth";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-import { chat, message, user } from "@/lib/db/schema";
-import { eq, asc } from "drizzle-orm";
 import PrintButton from "../../print-button";
 
 type MessagePart = { type: string; text?: string };
 
+type ChatMessage = {
+  id: string;
+  role: string;
+  parts: unknown;
+  createdAt: string;
+};
+
+type ChatData = {
+  chat: { id: string; title: string; createdAt: string; userEmail: string | null };
+  messages: ChatMessage[];
+};
+
 function extractText(parts: unknown): string {
   if (!Array.isArray(parts)) return "";
-  return parts
-    .filter((p): p is MessagePart => p !== null && typeof p === "object" && p.type === "text")
+  return (parts as MessagePart[])
+    .filter((p) => p?.type === "text")
     .map((p) => p.text ?? "")
     .join("\n");
 }
 
-export default async function AdminChatPage({
+export default function AdminChatPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await connection();
+  const { id } = use(params);
+  const router = useRouter();
+  const [data, setData] = useState<ChatData | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const cookieStore = await cookies();
-  const token = cookieStore.get("admin_token")?.value;
+  useEffect(() => {
+    fetch(`/api/admin/chat/${id}`)
+      .then((res) => {
+        if (res.status === 401) {
+          router.push("/admin");
+          return null;
+        }
+        if (res.status === 404) {
+          router.push("/admin/dashboard");
+          return null;
+        }
+        return res.json();
+      })
+      .then((json) => {
+        if (json) setData(json);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [id, router]);
 
-  if (!token || !verifyAdminToken(token)) {
-    redirect("/admin");
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-gray-400">Carregando...</div>
+      </div>
+    );
   }
 
-  const { id } = await params;
-
-  const client = postgres(process.env.POSTGRES_URL ?? "");
-  const db = drizzle(client);
-
-  const [selectedChat] = await db
-    .select({
-      id: chat.id,
-      title: chat.title,
-      createdAt: chat.createdAt,
-      userEmail: user.email,
-    })
-    .from(chat)
-    .leftJoin(user, eq(chat.userId, user.id))
-    .where(eq(chat.id, id));
-
-  if (!selectedChat) {
-    notFound();
-  }
-
-  const messages = await db
-    .select()
-    .from(message)
-    .where(eq(message.chatId, id))
-    .orderBy(asc(message.createdAt));
+  if (!data) return null;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -76,16 +83,16 @@ export default async function AdminChatPage({
         <div id="briefing-print">
           <div className="mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-              {selectedChat.title}
+              {data.chat.title}
             </h1>
             <p className="text-sm text-gray-500">
-              {selectedChat.userEmail ?? "convidado"} &middot;{" "}
-              {new Date(selectedChat.createdAt).toLocaleString("pt-BR")}
+              {data.chat.userEmail ?? "convidado"} &middot;{" "}
+              {new Date(data.chat.createdAt).toLocaleString("pt-BR")}
             </p>
           </div>
 
           <div className="flex flex-col gap-4">
-            {messages.map((msg) => {
+            {data.messages.map((msg) => {
               const text = extractText(msg.parts);
               if (!text.trim()) return null;
 
