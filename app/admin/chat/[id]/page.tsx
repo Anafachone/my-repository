@@ -1,6 +1,5 @@
 import "server-only";
-export const dynamic = "force-dynamic";
-
+import { connection } from "next/server";
 import { cookies } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
@@ -26,6 +25,8 @@ export default async function AdminChatPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await connection();
+
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
@@ -62,7 +63,6 @@ export default async function AdminChatPage({
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-3xl mx-auto p-6">
-        {/* Header — hidden on print */}
         <div className="flex items-center gap-4 mb-6 print:hidden">
           <Link
             href="/admin/dashboard"
@@ -73,7 +73,6 @@ export default async function AdminChatPage({
           <PrintButton />
         </div>
 
-        {/* Printable content */}
         <div id="briefing-print">
           <div className="mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">

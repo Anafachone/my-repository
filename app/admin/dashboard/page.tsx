@@ -1,6 +1,5 @@
 import "server-only";
-export const dynamic = "force-dynamic";
-
+import { connection } from "next/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -12,6 +11,8 @@ import { desc, eq } from "drizzle-orm";
 import LogoutButton from "../logout-button";
 
 export default async function AdminDashboard() {
+  await connection();
+
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_token")?.value;
 
