@@ -1,3 +1,21 @@
+claude/peaceful-cray-mjjws2
+import { connection } from "next/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { verifyAdminToken } from "@/lib/admin-auth";
+import AdminLoginForm from "./login-form";
+
+export default async function AdminPage() {
+  await connection();
+
+  const cookieStore = await cookies();
+  const token = cookieStore.get("admin_token")?.value;
+
+  if (token && verifyAdminToken(token)) {
+    redirect("/admin/dashboard");
+  }
+
+  return <AdminLoginForm />;
 'use client'
 import { useState } from 'react'
 
@@ -109,4 +127,5 @@ export default function AdminPage() {
       </div>
     </div>
   )
+main
 }
