@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "mesaas": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://api.mesaas.com.br/functions/v1/mcp",
+        "--header",
+        "Authorization:${AUTH_HEADER}"
+      ],
+      "env": {
+        "AUTH_HEADER": "Bearer ${MESAAS_API_KEY}"
+      }
+    }
+  }
+}
