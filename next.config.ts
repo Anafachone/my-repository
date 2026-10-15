@@ -17,7 +17,15 @@ const nextConfig: NextConfig = {
           },
         ],
       }
-    : {}),
+    : {
+        redirects: async () => [
+          {
+            source: "/",
+            destination: "https://form.typeform.com/to/y6yrcGiI",
+            permanent: false,
+          },
+        ],
+      }),
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
