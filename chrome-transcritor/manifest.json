@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Transcritor de Áudio",
+  "version": "0.1.0",
+  "description": "Transcreve o áudio da aba, o microfone ou arquivos de áudio, com Whisper local no navegador.",
+  "permissions": ["sidePanel", "tabCapture", "activeTab", "storage"],
+  "host_permissions": [
+    "https://huggingface.co/*",
+    "https://*.hf.co/*",
+    "https://api.anthropic.com/*"
+  ],
+  "action": { "default_title": "Abrir transcritor" },
+  "background": { "service_worker": "background.js" },
+  "side_panel": { "default_path": "sidepanel.html" },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "minimum_chrome_version": "116"
+}
