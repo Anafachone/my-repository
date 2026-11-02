@@ -1,0 +1,21 @@
+:root {
+  --bg: #ffffff; --fg: #1a1a1a; --muted: #5f6368; --card: #f5f6f8; --line: #dadce0; --accent: #1a73e8; --accent-fg: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #1f1f1f; --fg: #e8eaed; --muted: #9aa0a6; --card: #2a2a2a; --line: #3c4043; --accent: #8ab4f8; --accent-fg: #11161d; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 12px 16px; background: var(--bg); color: var(--fg); font: 14px/1.4 system-ui, sans-serif; }
+h1 { font-size: 16px; margin: 0 0 12px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 12px; display: grid; gap: 8px; }
+label { display: grid; gap: 4px; color: var(--muted); font-size: 12px; }
+select, input[type="text"], input[type="password"], textarea { width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); font: inherit; }
+textarea { resize: vertical; }
+.botoes { display: flex; flex-wrap: wrap; gap: 8px; }
+button { padding: 7px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--fg); cursor: pointer; font: inherit; }
+button:first-child, #btn-claude { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+button:disabled { opacity: .5; cursor: default; }
+#status { margin: 0; color: var(--muted); }
+progress { width: 100%; }
+.aviso { margin: 0; color: var(--muted); font-size: 12px; }
+summary { cursor: pointer; font-weight: 600; }

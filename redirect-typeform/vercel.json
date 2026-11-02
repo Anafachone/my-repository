@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://form.typeform.com/to/y6yrcGiI",
+      "permanent": false
+    }
+  ]
+}

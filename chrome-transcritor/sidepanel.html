@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcritor de Áudio</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <h1>Transcritor de Áudio</h1>
+
+  <section class="card">
+    <label>Idioma
+      <select id="idioma">
+        <option value="portuguese" selected>Português</option>
+        <option value="english">Inglês</option>
+        <option value="spanish">Espanhol</option>
+        <option value="auto">Detectar automaticamente</option>
+      </select>
+    </label>
+    <label>Modelo Whisper (local)
+      <select id="modelo">
+        <option value="Xenova/whisper-tiny">tiny (rápido, ~40 MB)</option>
+        <option value="Xenova/whisper-base" selected>base (equilibrado, ~80 MB)</option>
+        <option value="Xenova/whisper-small">small (mais preciso, ~250 MB)</option>
+      </select>
+    </label>
+  </section>
+
+  <section class="card">
+    <div class="botoes">
+      <button id="btn-aba">Gravar áudio da aba</button>
+      <button id="btn-mic">Gravar microfone</button>
+      <button id="btn-parar" disabled>Parar</button>
+    </div>
+    <label class="arquivo">Ou envie um arquivo de áudio
+      <input id="arquivo" type="file" accept="audio/*,video/*,.opus,.ogg,.m4a,.mp3,.wav">
+    </label>
+    <p id="status" role="status">Pronto.</p>
+    <progress id="barra" max="100" value="0" hidden></progress>
+  </section>
+
+  <section class="card">
+    <textarea id="texto" rows="12" placeholder="A transcrição aparece aqui."></textarea>
+    <div class="botoes">
+      <button id="btn-copiar">Copiar</button>
+      <button id="btn-baixar">Baixar .txt</button>
+      <button id="btn-limpar">Limpar</button>
+    </div>
+  </section>
+
+  <details class="card">
+    <summary>Melhorar texto com Claude (opcional)</summary>
+    <p class="aviso">O texto transcrito é enviado para a API da Anthropic. O áudio nunca sai do seu computador. A chave fica salva apenas neste navegador.</p>
+    <label>Chave da API
+      <input id="chave" type="password" autocomplete="off" placeholder="sk-ant-...">
+    </label>
+    <label>Modelo
+      <input id="claude-modelo" type="text" value="claude-opus-5-5">
+    </label>
+    <label>O que fazer
+      <select id="acao">
+        <option value="corrigir">Corrigir pontuação e erros, sem mudar o conteúdo</option>
+        <option value="resumir">Resumir em tópicos</option>
+      </select>
+    </label>
+    <button id="btn-claude">Enviar para o Claude</button>
+    <textarea id="resultado-claude" rows="8" placeholder="Resultado do Claude." readonly></textarea>
+  </details>
+
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>
